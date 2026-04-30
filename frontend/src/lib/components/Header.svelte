@@ -18,7 +18,7 @@
         alt=""
         aria-hidden="true"
       />
-      <span class="brand-text">Java Chat</span>
+      <span class="brand-text">JavaLearn</span>
     </a>
 
     <div class="nav-tabs" role="tablist" aria-label="Main navigation">

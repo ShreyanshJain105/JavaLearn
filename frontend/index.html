@@ -7,7 +7,7 @@
     <meta name="color-scheme" content="dark light" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <meta name="apple-mobile-web-app-title" content="Java Chat" />
+    <meta name="apple-mobile-web-app-title" content="JavaLearn" />
     <meta
       name="description"
       content="Learn Java faster with an AI tutor: streaming answers, code examples, and citations to official docs."
@@ -18,16 +18,16 @@
     />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
 
-    <title>Java Chat - AI-Powered Java Learning With Citations</title>
+    <title>JavaLearn - AI-Powered Java Learning With Citations</title>
 
     <!-- Canonical + Social sharing -->
     <link rel="canonical" href="/" data-seo="canonical" />
-    <meta property="og:site_name" content="Java Chat" />
+    <meta property="og:site_name" content="JavaLearn" />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="en_US" />
     <meta
       property="og:title"
-      content="Java Chat - AI-Powered Java Learning With Citations"
+      content="JavaLearn - AI-Powered Java Learning With Citations"
       data-seo="og:title"
     />
     <meta
@@ -39,7 +39,7 @@
     <meta property="og:image" content="/og-image.png" data-seo="og:image" />
     <meta
       property="og:image:alt"
-      content="JavaChat.ai – Learn programming and chat directly with libraries, SDKs, and GitHub repositories"
+      content="JavaLearn.ai – Learn programming and chat directly with libraries, SDKs, and GitHub repositories"
     />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
@@ -48,7 +48,7 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta
       name="twitter:title"
-      content="Java Chat - AI-Powered Java Learning With Citations"
+      content="JavaLearn - AI-Powered Java Learning With Citations"
       data-seo="twitter:title"
     />
     <meta
@@ -73,7 +73,7 @@
     <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16" />
     <link rel="icon" type="image/png" href="/favicon-128.png" sizes="128x128" />
     <link rel="icon" href="/favicon.ico" />
-    <meta name="application-name" content="Java Chat" />
+    <meta name="application-name" content="JavaLearn" />
     <meta name="msapplication-TileColor" content="#1a1a18" />
     <meta name="msapplication-TileImage" content="/mstile-144x144.png" />
     <meta name="msapplication-square70x70logo" content="/mstile-70x70.png" />
@@ -95,7 +95,7 @@
       Lightweight SEO: keep reasonable defaults in static HTML, then refine per-path using a tiny inline script.
       This improves social previews + canonical URLs for non-root entries served by the SPA fallback.
     -->
-    <script type="application/ld+json" id="java-chat-structured-data"></script>
+    <script type="application/ld+json" id="java-learn-structured-data"></script>
     <script>
       (function () {
         var origin = globalThis.location.origin;
@@ -103,7 +103,7 @@
         var normalizedPath = path.endsWith("/") && path.length > 1 ? path.slice(0, -1) : path;
 
         var baseSeo = {
-          title: "Java Chat - AI-Powered Java Learning With Citations",
+          title: "JavaLearn - AI-Powered Java Learning With Citations",
           description:
             "Learn Java faster with an AI tutor: streaming answers, code examples, and citations to official docs.",
           imagePath: "/og-image.png",
@@ -112,19 +112,19 @@
         var perPathSeo = {
           "/": baseSeo,
           "/chat": {
-            title: "Java Chat - Streaming Java Tutor With Citations",
+            title: "JavaLearn - Streaming Java Tutor With Citations",
             description:
               "Ask Java questions and get streaming answers with citations to official docs and practical examples.",
             imagePath: baseSeo.imagePath,
           },
           "/guided": {
-            title: "Guided Java Learning - Java Chat",
+            title: "Guided Java Learning - JavaLearn",
             description:
               "Structured, step-by-step Java learning paths with examples and explanations.",
             imagePath: baseSeo.imagePath,
           },
           "/learn": {
-            title: "Guided Java Learning - Java Chat",
+            title: "Guided Java Learning - JavaLearn",
             description:
               "Structured, step-by-step Java learning paths with examples and explanations.",
             imagePath: baseSeo.imagePath,
@@ -165,12 +165,12 @@
         if (twitterImageTag)
           twitterImageTag.setAttribute("content", origin + selectedSeo.imagePath);
 
-        var structuredSchemaTag = document.getElementById("java-chat-structured-data");
+        var structuredSchemaTag = document.getElementById("java-learn-structured-data");
         if (structuredSchemaTag) {
           structuredSchemaTag.textContent = JSON.stringify({
             "@context": "https://schema.org",
             "@type": "WebApplication",
-            name: "Java Chat",
+            name: "JavaLearn",
             url: origin + "/",
             applicationCategory: "EducationalApplication",
             operatingSystem: "Web",

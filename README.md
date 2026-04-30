@@ -1,6 +1,6 @@
-# Java Chat — AI-Powered JDK 25 Learning
+# JavaLearn — AI-Powered JDK 25 Learning
 
-**Java Chat** is a high-performance, full-stack RAG (Retrieval-Augmented Generation) application designed to provide precise, context-aware answers to Java development questions. It leverages the latest JDK documentation and professional learning resources to ensure accuracy and depth.
+**JavaLearn** is a high-performance, full-stack RAG (Retrieval-Augmented Generation) application designed to provide precise, context-aware answers to Java development questions. It leverages the latest JDK documentation and professional learning resources to ensure accuracy and depth.
 
 Developed with a focus on **Premium Aesthetics** and **Functional Clarity**.
 
