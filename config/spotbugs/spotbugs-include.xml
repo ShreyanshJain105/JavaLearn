@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FindBugsFilter>
+    <!-- High-signal bug categories (exclude style/noise/perf) -->
+    <Match>
+        <Bug category="CORRECTNESS,BAD_PRACTICE,MT_CORRECTNESS,SECURITY,MALICIOUS_CODE"/>
+    </Match>
+    
+    <!-- Exclude data directory from analysis -->
+    <Match>
+        <Source name="~.*data/.*"/>
+    </Match>
+</FindBugsFilter>
