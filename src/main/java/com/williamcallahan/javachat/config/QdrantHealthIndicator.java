@@ -52,8 +52,11 @@ public class QdrantHealthIndicator implements HealthIndicator {
                     .build();
         }
 
-        // Include time until next check for debugging
-        Health.Builder builder = Health.down().withDetail(DETAIL_KEY_STATUS, healthSnapshot.message());
+        // Return UP with details even when unhealthy to prevent Render from killing the service.
+        // The UI will handle displaying the unhealthy state to the user.
+        Health.Builder builder = Health.up()
+                .withDetail("warning", "Vector store unreachable")
+                .withDetail(DETAIL_KEY_STATUS, healthSnapshot.message());
 
         healthSnapshot
                 .timeUntilNextCheck()
