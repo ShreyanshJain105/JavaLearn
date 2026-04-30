@@ -68,10 +68,19 @@ ENV DOCS_SNAPSHOT_DIR=/app/data/snapshots
 ENV DOCS_PARSED_DIR=/app/data/parsed
 ENV DOCS_INDEX_DIR=/app/data/index
 
-EXPOSE 8085
+EXPOSE 10000
 
 # Healthcheck
-HEALTHCHECK CMD curl --fail http://localhost:${PORT}/actuator/health || exit 1
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+    CMD curl -f http://localhost:${PORT:-10000}/actuator/health || exit 1
 
-# Run app
-ENTRYPOINT ["sh", "-c", "java -Xms128m -Xmx256m -jar app.jar --server.port=${PORT}"]
+# Run app with critical flags for Qdrant/Netty performance
+ENTRYPOINT ["sh", "-c", "java \
+  -XX:+IgnoreUnrecognizedVMOptions \
+  --enable-native-access=ALL-UNNAMED \
+  --sun-misc-unsafe-memory-access=allow \
+  -Xms128m -Xmx256m \
+  -XX:+UseStringDeduplication \
+  -XX:+ExitOnOutOfMemoryError \
+  -Djava.security.egd=file:/dev/./urandom \
+  -jar app.jar --server.port=${PORT:-10000}"]
