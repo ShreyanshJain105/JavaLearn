@@ -33,7 +33,7 @@ RUN ./gradlew dependencies --no-daemon || true
 COPY src ./src
 
 # ✅ FIXED COPY (VERY IMPORTANT)
-COPY --from=frontend-builder /app/frontend/src/main/resources/static ./src/main/resources/static
+COPY --from=frontend-builder /app/src/main/resources/static ./src/main/resources/static
 
 # Build app (skip spotless)
 RUN ./gradlew clean build -x test -x spotlessCheck --no-daemon && \
