@@ -26,16 +26,16 @@ RUN chmod +x gradlew
 COPY build.gradle.kts settings.gradle.kts gradle.properties ./
 COPY config/ config/
 
-# Download dependencies (cached)
+# Download dependencies
 RUN ./gradlew dependencies --no-daemon || true
 
 # Source code
 COPY src ./src
 
-# Copy frontend build into backend
-COPY --from=frontend-builder /app/frontend/build ./src/main/resources/static
+# ✅ FIXED COPY (VERY IMPORTANT)
+COPY --from=frontend-builder /app/frontend/src/main/resources/static ./src/main/resources/static
 
-# 🔥 IMPORTANT: Skip spotlessCheck to avoid failure
+# Build app (skip spotless)
 RUN ./gradlew clean build -x test -x spotlessCheck --no-daemon && \
     cp $(ls build/libs/*.jar | grep -v '\-plain\.jar' | head -n 1) app.jar
 
@@ -44,17 +44,17 @@ RUN ./gradlew clean build -x test -x spotlessCheck --no-daemon && \
 FROM eclipse-temurin:25-jre
 WORKDIR /app
 
-# Install curl (for healthcheck)
+# Install curl
 RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
 
-# Non-root user
+# Create non-root user
 RUN useradd -m appuser
 USER appuser
 
-# Copy app
+# Copy built app
 COPY --from=builder /app/app.jar app.jar
 
-# Environment defaults (safe fallback)
+# Environment defaults
 ENV PORT=8085
 ENV APP_LOCAL_EMBEDDING_ENABLED=false
 ENV APP_LOCAL_EMBEDDING_USE_HASH_WHEN_DISABLED=true
