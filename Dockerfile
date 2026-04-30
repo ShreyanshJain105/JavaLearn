@@ -52,17 +52,17 @@ ENV DOCS_INDEX_DIR=/app/data/index
 
 EXPOSE 10000
 
-# Healthcheck
-HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
-    CMD curl -f http://localhost:${PORT:-10000}/actuator/health || exit 1
 
 # Run app with critical flags for Qdrant/Netty performance
 ENTRYPOINT ["sh", "-c", "java \
   -XX:+IgnoreUnrecognizedVMOptions \
   --enable-native-access=ALL-UNNAMED \
   --sun-misc-unsafe-memory-access=allow \
-  -Xms128m -Xmx256m \
+  -Xms128m -Xmx200m \
+  -XX:MaxMetaspaceSize=128m \
   -XX:+UseStringDeduplication \
+  -XX:+UseG1GC \
+  -XX:MaxGCPauseMillis=200 \
   -XX:+ExitOnOutOfMemoryError \
   -Djava.security.egd=file:/dev/./urandom \
   -jar app.jar --server.port=${PORT:-10000}"]
