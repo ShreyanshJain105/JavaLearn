@@ -2,6 +2,7 @@ package com.williamcallahan.javachat.config;
 
 import com.williamcallahan.javachat.service.EmbeddingClient;
 import com.williamcallahan.javachat.service.EmbeddingServiceUnavailableException;
+import com.williamcallahan.javachat.service.HashEmbeddingClient;
 import com.williamcallahan.javachat.service.LocalEmbeddingClient;
 import com.williamcallahan.javachat.service.OpenAiCompatibleEmbeddingClient;
 import java.util.Locale;
@@ -83,6 +84,13 @@ public class EmbeddingConfig {
         boolean hasRemoteServerUrl = !remoteServerUrl.isBlank();
         boolean hasRemoteApiKey = !remoteApiKey.isBlank();
 
+        if (appProperties.getLocalEmbedding().isUseHashWhenDisabled()) {
+            log.warn("[EMBEDDING] Using deterministic HashEmbeddingClient (dummy embeddings). "
+                    + "Semantic search will not work properly. "
+                    + "This mode is strictly for local testing when a real embedding server is unavailable.");
+            return new HashEmbeddingClient(appProperties.getEmbeddings().getDimensions());
+        }
+
         if (hasRemoteServerUrl != hasRemoteApiKey) {
             throw new EmbeddingServiceUnavailableException(
                     "Invalid remote embedding configuration: " + REMOTE_EMBEDDING_SERVER_URL_PROPERTY + " and "
@@ -119,8 +127,8 @@ public class EmbeddingConfig {
         throw new EmbeddingServiceUnavailableException(
                 "Embedding provider unavailable: no embedding provider configured. "
                         + "Set APP_LOCAL_EMBEDDING_ENABLED=true, configure both "
-                        + "REMOTE_EMBEDDING_SERVER_URL and REMOTE_EMBEDDING_API_KEY, or set OPENAI_API_KEY and "
-                        + "OPENAI_EMBEDDING_MODEL_NAME.");
+                        + "REMOTE_EMBEDDING_SERVER_URL and REMOTE_EMBEDDING_API_KEY, set OPENAI_API_KEY and "
+                        + "OPENAI_EMBEDDING_MODEL_NAME, or set APP_LOCAL_EMBEDDING_USE_HASH_WHEN_DISABLED=true.");
     }
 
     private static void rejectGitHubModelsEmbeddingEndpoint(String configuredBaseUrl, String configurationKey) {

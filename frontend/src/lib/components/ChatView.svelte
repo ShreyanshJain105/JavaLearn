@@ -265,8 +265,8 @@
     .messages-inner {
         max-width: 800px;
         margin: 0 auto;
-        padding: var(--space-6);
-        --messages-list-gap: var(--space-6);
+        padding: var(--space-6) var(--space-6) var(--space-20);
+        --messages-list-gap: var(--space-8);
     }
 
     .message-with-citations {

@@ -44,10 +44,11 @@
   <div class="suggestions">
     <p class="suggestions-label">Try asking about</p>
     <div class="suggestions-grid">
-      {#each suggestions as suggestion}
+      {#each suggestions as suggestion, i}
         <button
           type="button"
           class="suggestion-card"
+          style="animation-delay: {150 + i * 100}ms"
           onclick={() => onSuggestionClick(suggestion.query)}
         >
           <span class="suggestion-title">{suggestion.title}</span>
@@ -100,7 +101,10 @@
   .title-accent {
     font-family: var(--font-sans);
     font-weight: 600;
-    color: var(--color-accent);
+    background: var(--color-accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
 
   .welcome-subtitle {
@@ -142,15 +146,24 @@
     border-radius: var(--radius-lg);
     cursor: pointer;
     text-align: left;
-    transition: all var(--duration-fast) var(--ease-out);
+    transition: all var(--duration-normal) var(--ease-spring);
     position: relative;
     overflow: hidden;
+    animation: fade-in-up var(--duration-slow) var(--ease-out) both;
   }
 
   .suggestion-card:hover {
     background: var(--color-bg-tertiary);
-    border-color: var(--color-border-default);
-    transform: translateY(-2px);
+    border-color: var(--color-accent-muted);
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: var(--shadow-lg), var(--glow-accent);
+  }
+
+  .suggestion-card {
+    /* Apply gentle float after entrance */
+    animation: 
+      fade-in-up var(--duration-slow) var(--ease-out) both,
+      float 6s var(--ease-in-out) infinite var(--duration-slow);
   }
 
   .suggestion-card:hover .suggestion-arrow {

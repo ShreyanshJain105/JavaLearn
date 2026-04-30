@@ -1,4 +1,7 @@
 <script lang="ts">
+  import { onMount } from 'svelte'
+  import { theme } from '../stores/themeStore'
+
   interface Props {
     currentView: 'chat' | 'learn'
   }
@@ -6,7 +9,7 @@
   let { currentView = $bindable('chat') }: Props = $props()
 </script>
 
-<header class="header">
+<header class="header glass glass-edge">
   <div class="header-inner">
     <a href="/" class="brand" aria-label="Java Chat Home">
       <img
@@ -48,6 +51,24 @@
       </button>
     </div>
 
+    <button
+      type="button"
+      class="theme-toggle"
+      onclick={() => theme.toggle()}
+      title="Toggle theme"
+      aria-label="Toggle theme"
+    >
+      {#if $theme === 'dark'}
+        <svg viewBox="0 0 20 20" fill="currentColor" class="theme-icon">
+          <path d="M10 2a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 10 2ZM10 15a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 10 15ZM10 7a3 3 0 1 0 0 6 3 3 0 0 0 0-6ZM15.657 5.404a.75.75 0 1 0-1.06-1.06l-1.061 1.06a.75.75 0 0 0 1.06 1.06l1.06-1.06ZM6.464 14.596a.75.75 0 1 0-1.06-1.06l-1.06 1.06a.75.75 0 0 0 1.06 1.06l1.06-1.06ZM18 10a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 18 10ZM5 10a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 5 10ZM15.657 14.596a.75.75 0 1 1-1.06 1.06l-1.06-1.06a.75.75 0 1 1 1.06-1.06l1.06 1.06ZM6.464 5.404a.75.75 0 1 1-1.06 1.06l-1.061-1.06a.75.75 0 1 1 1.06-1.06l1.06 1.061Z" />
+        </svg>
+      {:else}
+        <svg viewBox="0 0 20 20" fill="currentColor" class="theme-icon">
+          <path d="M17.293 13.293A8 8 0 0 1 6.707 2.707a8.001 8.001 0 1 0 10.586 10.586Z" />
+        </svg>
+      {/if}
+    </button>
+
   </div>
 </header>
 
@@ -56,7 +77,6 @@
     position: sticky;
     top: 0;
     z-index: 100;
-    background: var(--color-bg-primary);
     border-bottom: 1px solid var(--color-border-subtle);
   }
 
@@ -102,10 +122,11 @@
   .nav-tabs {
     display: flex;
     gap: var(--space-1);
-    background: var(--color-surface-subtle);
+    background: var(--color-bg-primary);
     padding: var(--space-1);
     border-radius: var(--radius-lg);
     border: 1px solid var(--color-border-subtle);
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2);
   }
 
   .nav-tab {
@@ -144,6 +165,33 @@
   .nav-tab:hover .nav-icon,
   .nav-tab.active .nav-icon {
     opacity: 1;
+  }
+
+  .theme-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-full);
+    background: var(--color-bg-elevated);
+    border: 1px solid var(--color-border-subtle);
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: all var(--duration-normal) var(--ease-spring);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .theme-toggle:hover {
+    color: var(--color-accent);
+    transform: rotate(15deg) scale(1.1);
+    background: var(--color-bg-hover);
+    box-shadow: var(--shadow-md), var(--glow-accent);
+  }
+
+  .theme-icon {
+    width: 18px;
+    height: 18px;
   }
 
 

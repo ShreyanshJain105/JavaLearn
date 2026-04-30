@@ -5,44 +5,57 @@
  */
 
 :root {
-  /* ═══════════════════════════════════════════════════════════════════════════
-   * COLOR SYSTEM - Warm Neutrals + Terracotta Accent
-   * ═══════════════════════════════════════════════════════════════════════════ */
-
-  /* Base - Warm charcoal scale */
-  --color-bg-primary: #1a1a18;
-  --color-bg-secondary: #222220;
-  --color-bg-tertiary: #2a2a27;
-  --color-bg-elevated: #323230;
-  --color-bg-hover: #3a3a37;
-
-  /* Surface overlays */
-  --color-surface-subtle: rgba(255, 252, 247, 0.02);
-  --color-surface-muted: rgba(255, 252, 247, 0.04);
-  --color-surface-hover: rgba(255, 252, 247, 0.06);
-
-  /* Text - Cream hierarchy */
+  /* ... existing dark theme vars ... */
+  --color-bg-primary: #121211;
+  --color-bg-secondary: #1a1a18;
+  --color-bg-tertiary: #222220;
+  --color-bg-elevated: #2a2a28;
+  --color-bg-hover: #323230;
+  --color-surface-glass: rgba(26, 26, 24, 0.72);
   --color-text-primary: #fffcf7;
   --color-text-secondary: rgba(255, 252, 247, 0.72);
   --color-text-tertiary: rgba(255, 252, 247, 0.48);
   --color-text-muted: rgba(255, 252, 247, 0.32);
-
-  /* Accent - Terracotta/Sienna */
-  --color-accent: #c45d3a;
-  --color-accent-hover: #d4694a;
-  --color-accent-muted: rgba(196, 93, 58, 0.16);
-  --color-accent-subtle: rgba(196, 93, 58, 0.08);
-
-  /* Borders */
   --color-border-subtle: rgba(255, 252, 247, 0.06);
   --color-border-default: rgba(255, 252, 247, 0.1);
   --color-border-strong: rgba(255, 252, 247, 0.16);
+  --shadow-color: rgba(0, 0, 0, 0.5);
+}
+
+:root[data-theme="light"] {
+  --color-bg-primary: #fcfcfc;
+  --color-bg-secondary: #f7f7f5;
+  --color-bg-tertiary: #efefed;
+  --color-bg-elevated: #e5e5e2;
+  --color-bg-hover: #dbdbd8;
+  --color-surface-glass: rgba(252, 252, 252, 0.85);
+  --color-text-primary: #1a1a18;
+  --color-text-secondary: #3a3a38;
+  --color-text-tertiary: #5a5a58;
+  --color-text-muted: #8a8a88;
+  --color-border-subtle: rgba(0, 0, 0, 0.04);
+  --color-border-default: rgba(0, 0, 0, 0.08);
+  --color-border-strong: rgba(0, 0, 0, 0.12);
+  --shadow-color: rgba(0, 0, 0, 0.1);
+}
+
+:root {
+  /* ═══════════════════════════════════════════════════════════════════════════
+   * SHARED TOKENS
+   * ═══════════════════════════════════════════════════════════════════════════ */
+
+  /* Accent - Ochre/Copper */
+  --color-accent: #d4a04a;
+  --color-accent-hover: #e5b15a;
+  --color-accent-muted: rgba(212, 160, 74, 0.16);
+  --color-accent-subtle: rgba(212, 160, 74, 0.08);
+  --color-accent-gradient: linear-gradient(135deg, #d4a04a 0%, #c45d3a 100%);
 
   /* Semantic */
-  --color-success: #5d9b5d;
-  --color-warning: #c9a04a;
-  --color-error: #c45d5d;
-  --color-info: #5d8ac4;
+  --color-success: #6ba36b;
+  --color-warning: #d4a04a;
+  --color-error: #d46b6b;
+  --color-info: #6b97d4;
 
   /* ═══════════════════════════════════════════════════════════════════════════
    * TYPOGRAPHY - DM Sans + Fraunces
@@ -116,14 +129,14 @@
   --radius-2xl: 24px;
   --radius-full: 9999px;
 
-  /* Shadows - warm tinted */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
-  --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.6);
+  /* Shadows - deep soft warm */
+  --shadow-sm: 0 1px 2px var(--shadow-color);
+  --shadow-md: 0 4px 12px var(--shadow-color);
+  --shadow-lg: 0 8px 24px var(--shadow-color);
+  --shadow-xl: 0 16px 48px var(--shadow-color);
 
   /* Glow */
-  --glow-accent: 0 0 24px rgba(196, 93, 58, 0.2);
+  --glow-accent: 0 0 32px rgba(212, 160, 74, 0.15);
 
   /* ═══════════════════════════════════════════════════════════════════════════
    * TRANSITIONS & ANIMATIONS
@@ -132,11 +145,12 @@
   --ease-out: cubic-bezier(0.25, 0.46, 0.45, 0.94);
   --ease-in-out: cubic-bezier(0.645, 0.045, 0.355, 1);
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-elastic: cubic-bezier(0.68, -0.6, 0.32, 1.6);
 
   /* Transition durations */
-  --duration-fast: 100ms;
-  --duration-normal: 200ms;
-  --duration-slow: 400ms;
+  --duration-fast: 150ms;
+  --duration-normal: 300ms;
+  --duration-slow: 600ms;
 
   /* Animation durations - longer cycles for ambient effects */
   --duration-bounce: 1.4s;
@@ -148,7 +162,8 @@
   --loading-dot-gap: 4px;
 
   /* Layout dimensions */
-  --header-height: 57px;
+  --header-height: 64px;
+  --glass-blur: 12px;
 }
 
 /* Responsive header heights */
@@ -191,6 +206,21 @@ body {
   background-color: var(--color-bg-primary);
   height: 100vh;
   overflow: hidden;
+  position: relative;
+}
+
+body::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity: 0.04;
+  pointer-events: none;
+  z-index: 1;
+}
+
+:root[data-theme="light"] body::before {
+  opacity: 0.08;
 }
 
 @supports (height: 100dvh) {
@@ -270,6 +300,17 @@ body {
   font-family: var(--font-mono);
 }
 
+.glass {
+  background: var(--color-surface-glass);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+}
+
+.glass-edge {
+  border: 1px solid var(--color-border-subtle);
+  box-shadow: inset 0 1px 0 rgba(255, 252, 247, 0.05);
+}
+
 /* ═══════════════════════════════════════════════════════════════════════════
  * ANIMATIONS
  * ═══════════════════════════════════════════════════════════════════════════ */
@@ -338,12 +379,47 @@ body {
   }
 }
 
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 rgba(212, 160, 74, 0);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(212, 160, 74, 0.2);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
 .animate-fade-in {
-  animation: fade-in var(--duration-normal) var(--ease-out);
+  animation: fade-in var(--duration-normal) var(--ease-out) both;
 }
 
 .animate-fade-in-up {
-  animation: fade-in-up var(--duration-slow) var(--ease-out);
+  animation: fade-in-up var(--duration-slow) var(--ease-out) both;
+}
+
+.animate-float {
+  animation: float 4s var(--ease-in-out) infinite;
+}
+
+.animate-glow-pulse {
+  animation: glow-pulse 3s var(--ease-in-out) infinite;
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════

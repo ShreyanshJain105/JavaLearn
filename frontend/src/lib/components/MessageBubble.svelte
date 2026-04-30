@@ -147,15 +147,38 @@
   .message {
     display: flex;
     gap: var(--space-3);
-    animation: fade-in-up var(--duration-normal) var(--ease-out) backwards;
   }
 
   .message.user {
     justify-content: flex-end;
+    animation: slide-in-right var(--duration-normal) var(--ease-out) both;
   }
 
   .message.assistant {
     justify-content: flex-start;
+    animation: slide-in-left var(--duration-normal) var(--ease-out) both;
+  }
+
+  @keyframes slide-in-right {
+    from {
+      opacity: 0;
+      transform: translateX(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes slide-in-left {
+    from {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
   }
 
   /* Avatar */
@@ -182,21 +205,25 @@
     position: relative;
     overflow: visible;
     max-width: 85%;
-    padding: var(--space-4);
-    border-radius: var(--radius-xl);
-    transition: background-color var(--duration-fast) var(--ease-out);
+    padding: var(--space-4) var(--space-5);
+    border-radius: var(--radius-2xl);
+    transition: all var(--duration-normal) var(--ease-out);
+    box-shadow: var(--shadow-sm);
   }
 
   .message.user .bubble {
     background: var(--color-accent);
+    background: var(--color-accent-gradient);
     color: white;
     border-bottom-right-radius: var(--radius-sm);
+    box-shadow: var(--glow-accent);
   }
 
   .message.assistant .bubble {
     background: var(--color-bg-secondary);
     border: 1px solid var(--color-border-subtle);
     border-bottom-left-radius: var(--radius-sm);
+    box-shadow: var(--shadow-md);
   }
 
   .message.error .bubble {
@@ -314,6 +341,7 @@
     border-radius: var(--radius-lg);
     overflow-x: auto;
     font-size: var(--text-sm);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
   }
 
   .assistant-content :global(pre code) {

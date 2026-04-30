@@ -21,6 +21,7 @@ public class LocalEmbedding {
     private static final String POSITIVE_FMT = "%s must be greater than 0.";
 
     private boolean enabled;
+    private boolean useHashWhenDisabled;
     private String serverUrl = URL_DEF;
     private String model = MODEL_DEF;
     private int dimensions = DIM_DEF;
@@ -54,6 +55,14 @@ public class LocalEmbedding {
 
     public void setEnabled(final boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public boolean isUseHashWhenDisabled() {
+        return useHashWhenDisabled;
+    }
+
+    public void setUseHashWhenDisabled(final boolean useHashWhenDisabled) {
+        this.useHashWhenDisabled = useHashWhenDisabled;
     }
 
     public String getServerUrl() {
