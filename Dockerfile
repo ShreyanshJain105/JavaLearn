@@ -1,18 +1,3 @@
-# ================================
-# JAVA CHAT - PRODUCTION DOCKERFILE
-# ================================
-
-# ---------- FRONTEND BUILD ----------
-FROM node:22-bookworm-slim AS frontend-builder
-WORKDIR /app/frontend
-
-COPY frontend/package*.json ./
-RUN npm ci
-
-COPY frontend/ .
-RUN npm run build
-
-
 # ---------- BACKEND BUILD ----------
 FROM eclipse-temurin:25-jdk AS builder
 WORKDIR /app
@@ -32,10 +17,7 @@ RUN ./gradlew dependencies --no-daemon || true
 # Source code
 COPY src ./src
 
-# ✅ FIXED COPY (VERY IMPORTANT)
-COPY --from=frontend-builder /app/src/main/resources/static ./src/main/resources/static
-
-# Build app (skip spotless)
+# Build app (skip spotless and tests)
 RUN ./gradlew clean build -x test -x spotlessCheck --no-daemon && \
     cp $(ls build/libs/*.jar | grep -v '\-plain\.jar' | head -n 1) app.jar
 

@@ -71,9 +71,8 @@ export default defineConfig(({ mode }) => ({
     },
   },
   build: {
-    // Build directly to Spring Boot static resources
-    outDir: "../src/main/resources/static",
-    emptyOutDir: false, // Don't delete favicons
+    outDir: "dist",
+    emptyOutDir: true,
     rollupOptions: {
       output: {
         manualChunks: {
