@@ -47,8 +47,11 @@ WORKDIR /app
 # Install curl
 RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
 
-# Create non-root user
-RUN useradd -m appuser
+# Create directories and non-root user
+RUN mkdir -p logs data/snapshots data/parsed data/index && \
+    useradd -m appuser && \
+    chown -R appuser:appuser /app
+
 USER appuser
 
 # Copy built app
@@ -61,6 +64,9 @@ ENV APP_LOCAL_EMBEDDING_USE_HASH_WHEN_DISABLED=true
 ENV QDRANT_HOST=localhost
 ENV QDRANT_PORT=6334
 ENV QDRANT_REST_PORT=6333
+ENV DOCS_SNAPSHOT_DIR=/app/data/snapshots
+ENV DOCS_PARSED_DIR=/app/data/parsed
+ENV DOCS_INDEX_DIR=/app/data/index
 
 EXPOSE 8085
 
