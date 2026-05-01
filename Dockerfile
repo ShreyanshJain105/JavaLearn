@@ -26,10 +26,10 @@ RUN ./gradlew clean build -x test -x spotlessCheck --no-daemon && \
 FROM eclipse-temurin:25-jre
 WORKDIR /app
 
-# Copy JAR first (as root) so we can set ownership correctly
+# Copy JAR first as root
 COPY --from=builder /app/app.jar app.jar
 
-# Create directories and non-root user, then fix ownership
+# Setup directories and user
 RUN mkdir -p logs data/snapshots data/parsed data/index && \
     useradd -m appuser && \
     chown -R appuser:appuser /app
@@ -38,14 +38,5 @@ USER appuser
 
 EXPOSE 10000
 
-# Run with native-access flags required by Qdrant gRPC client
-ENTRYPOINT ["java", \
-  "--enable-native-access=ALL-UNNAMED", \
-  "-XX:+IgnoreUnrecognizedVMOptions", \
-  "-Xms64m", "-Xmx220m", \
-  "-XX:MaxMetaspaceSize=120m", \
-  "-XX:+UseG1GC", \
-  "-XX:+ExitOnOutOfMemoryError", \
-  "-Djava.security.egd=file:/dev/./urandom", \
-  "-Djava.awt.headless=true", \
-  "-jar", "app.jar"]
+# Final stability flags: 350MB Heap, Shell form for PORT resolution
+ENTRYPOINT ["sh", "-c", "java --enable-native-access=ALL-UNNAMED -Xms128m -Xmx350m -XX:+UseG1GC -XX:+ExitOnOutOfMemoryError -Djava.security.egd=file:/dev/./urandom -jar app.jar --server.port=${PORT:-10000}"]
