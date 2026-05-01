@@ -56,7 +56,13 @@ public class QdrantClientConfig {
     public QdrantClient qdrantClient() {
         log.info("Creating QdrantClient with gRPC keepalive");
 
-        ManagedChannelBuilder<?> channelBuilder = ManagedChannelBuilder.forAddress(host, port);
+        // Self-healing: strip protocol if present in host string
+        String sanitizedHost = host;
+        if (sanitizedHost != null) {
+            sanitizedHost = sanitizedHost.replace("https://", "").replace("http://", "");
+        }
+
+        ManagedChannelBuilder<?> channelBuilder = ManagedChannelBuilder.forAddress(sanitizedHost, port);
         if (useTls) {
             channelBuilder.useTransportSecurity();
         } else {
