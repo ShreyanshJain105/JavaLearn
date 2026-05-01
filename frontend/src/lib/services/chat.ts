@@ -14,6 +14,7 @@ import {
 import { validateFetchJson } from "../validation/validate";
 import { csrfHeader, extractApiErrorMessage, fetchWithCsrfRetry } from "./csrf";
 import { streamWithRetry } from "./streamRecovery";
+import { API_BASE_URL } from "../config";
 
 export type { StreamStatus, StreamError, Citation };
 
@@ -53,7 +54,7 @@ export async function streamChat(
   options: StreamChatOptions = {},
 ): Promise<void> {
   return streamWithRetry(
-    "/api/chat/stream",
+    `${API_BASE_URL}/api/chat/stream`,
     { sessionId, latest: message },
     {
       onChunk,
@@ -78,7 +79,7 @@ export async function clearChatSession(sessionId: string): Promise<void> {
   }
 
   const clearSessionResponse = await fetchWithCsrfRetry(
-    `/api/chat/clear?sessionId=${encodeURIComponent(normalizedSessionId)}`,
+    `${API_BASE_URL}/api/chat/clear?sessionId=${encodeURIComponent(normalizedSessionId)}`,
     {
       method: "POST",
       headers: {
@@ -135,7 +136,7 @@ export async function fetchCitationsByEndpoint(
  */
 export async function fetchCitations(query: string): Promise<CitationFetchResult> {
   return fetchCitationsByEndpoint(
-    `/api/chat/citations?q=${encodeURIComponent(query)}`,
+    `${API_BASE_URL}/api/chat/citations?q=${encodeURIComponent(query)}`,
     `fetchCitations [query=${query}]`,
   );
 }

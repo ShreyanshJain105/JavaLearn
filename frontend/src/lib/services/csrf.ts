@@ -1,13 +1,14 @@
 import { ApiErrorResponseSchema, type ApiErrorResponse } from "../validation/schemas";
 import { validateWithSchema } from "../validation/validate";
 import { pushToast } from "../stores/toastStore";
+import { API_BASE_URL } from "../config";
 
 /** Spring Security's default CSRF cookie name for SPA clients. */
 const CSRF_COOKIE_NAME = "XSRF-TOKEN";
 
 /** Header name expected by Spring Security's CsrfTokenRequestAttributeHandler. */
 const CSRF_HEADER_NAME = "X-XSRF-TOKEN";
-const CSRF_REFRESH_ENDPOINT = "/api/security/csrf";
+const CSRF_REFRESH_ENDPOINT = `${API_BASE_URL}/api/security/csrf`;
 
 export const CSRF_EXPIRED_MESSAGE = "CSRF token expired. Refresh the page and retry the request.";
 export const CSRF_INVALID_MESSAGE =
