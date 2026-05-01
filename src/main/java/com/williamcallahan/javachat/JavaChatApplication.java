@@ -27,11 +27,7 @@ public class JavaChatApplication {
         // Disable Netty native OpenSSL (tcnative) to avoid Alpine musl segfaults
         System.setProperty(NETTY_OPENSSL_PROPERTY, OPENSSL_DISABLED);
         System.setProperty(GRPC_NETTY_OPENSSL_PROPERTY, OPENSSL_DISABLED);
-        ConfigurableApplicationContext applicationContext = SpringApplication.run(JavaChatApplication.class, args);
-        if (isCliExecution(applicationContext.getEnvironment())) {
-            int exitCode = SpringApplication.exit(applicationContext, () -> 0);
-            System.exit(exitCode);
-        }
+        SpringApplication.run(JavaChatApplication.class, args);
     }
 
     private JavaChatApplication() {}
