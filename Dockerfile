@@ -26,27 +26,26 @@ RUN ./gradlew clean build -x test -x spotlessCheck --no-daemon && \
 FROM eclipse-temurin:25-jre
 WORKDIR /app
 
-# Install curl
-RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
+# Copy JAR first (as root) so we can set ownership correctly
+COPY --from=builder /app/app.jar app.jar
 
-# Create directories and non-root user
+# Create directories and non-root user, then fix ownership
 RUN mkdir -p logs data/snapshots data/parsed data/index && \
     useradd -m appuser && \
     chown -R appuser:appuser /app
 
 USER appuser
 
-# Copy built app
-COPY --from=builder /app/app.jar app.jar
-
 EXPOSE 10000
 
-# Run app with optimized production flags
+# Run with native-access flags required by Qdrant gRPC client
 ENTRYPOINT ["java", \
-  "-Xms128m", "-Xmx256m", \
+  "--enable-native-access=ALL-UNNAMED", \
+  "-XX:+IgnoreUnrecognizedVMOptions", \
+  "-Xms64m", "-Xmx220m", \
+  "-XX:MaxMetaspaceSize=120m", \
   "-XX:+UseG1GC", \
   "-XX:+ExitOnOutOfMemoryError", \
   "-Djava.security.egd=file:/dev/./urandom", \
   "-Djava.awt.headless=true", \
-  "-jar", "app.jar", \
-  "--server.port=10000"]
+  "-jar", "app.jar"]
