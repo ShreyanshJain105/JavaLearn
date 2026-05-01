@@ -12,7 +12,8 @@ COPY build.gradle.kts settings.gradle.kts gradle.properties ./
 COPY config/ config/
 
 # Download dependencies
-RUN ./gradlew dependencies --no-daemon || true
+RUN sed -i 's/\r$//' gradlew && \
+    ./gradlew dependencies --no-daemon || true
 
 # Source code
 COPY src ./src
