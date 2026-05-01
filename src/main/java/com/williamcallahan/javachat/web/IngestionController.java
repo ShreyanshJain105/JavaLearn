@@ -68,14 +68,6 @@ public class IngestionController extends BaseController {
             return ResponseEntity.status(HttpStatus.ACCEPTED)
                     .body(IngestionRunOutcome.success(String.format("Ingestion started in background for up to %d pages", maxPages)));
 
-        } catch (IOException ioException) {
-            log.error(
-                    "IO error during ingestion (exception type: {})",
-                    ioException.getClass().getSimpleName());
-            return buildIngestionError(
-                    HttpStatus.INTERNAL_SERVER_ERROR,
-                    "Failed to ingest documents: " + ioException.getMessage(),
-                    ioException);
         } catch (RuntimeException runtimeException) {
             log.error(
                     "Unexpected error during ingestion (exception type: {})",
@@ -107,17 +99,9 @@ public class IngestionController extends BaseController {
             });
 
             return ResponseEntity.status(HttpStatus.ACCEPTED)
-                    .body(IngestionLocalOutcome.success(String.format("Local ingestion started in background for directory: %s", directory)));
+                    .body(IngestionLocalOutcome.started(directory));
         } catch (IllegalArgumentException illegalArgumentException) {
             return buildIngestionValidationError(illegalArgumentException);
-        } catch (IOException ioException) {
-            log.error(
-                    "Local ingestion IO error (exception type: {})",
-                    ioException.getClass().getSimpleName());
-            return buildIngestionError(
-                    HttpStatus.INTERNAL_SERVER_ERROR,
-                    "Failed to perform local ingestion: " + ioException.getMessage(),
-                    ioException);
         } catch (RuntimeException runtimeException) {
             log.error(
                     "Local ingestion error (exception type: {})",

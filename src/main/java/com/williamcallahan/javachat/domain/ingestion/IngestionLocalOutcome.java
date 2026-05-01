@@ -28,6 +28,16 @@ public record IngestionLocalOutcome(String status, int processed, String dir, Li
     }
 
     /**
+     * Creates a response indicating that local ingestion has started in the background.
+     *
+     * @param dir ingested directory path
+     * @return standardized local ingestion outcome with "started" status
+     */
+    public static IngestionLocalOutcome started(String dir) {
+        return new IngestionLocalOutcome("started", 0, dir, List.of());
+    }
+
+    /**
      * Creates a local ingestion success response.
      *
      * @param processed number of processed files
