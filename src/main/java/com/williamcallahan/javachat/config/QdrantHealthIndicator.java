@@ -40,28 +40,6 @@ public class QdrantHealthIndicator implements HealthIndicator {
      */
     @Override
     public Health health() {
-        // Trigger retry checks when unhealthy and backoff has elapsed.
-        externalServiceHealth.triggerRetryIfDue(ExternalServiceHealth.SERVICE_QDRANT);
-
-        ExternalServiceHealth.HealthSnapshot healthSnapshot =
-                externalServiceHealth.getHealthSnapshot(ExternalServiceHealth.SERVICE_QDRANT);
-
-        if (healthSnapshot.isHealthy()) {
-            return Health.up()
-                    .withDetail(DETAIL_KEY_STATUS, healthSnapshot.message())
-                    .build();
-        }
-
-        // Return UP with details even when unhealthy to prevent Render from killing the service.
-        // The UI will handle displaying the unhealthy state to the user.
-        Health.Builder builder = Health.up()
-                .withDetail("warning", "Vector store unreachable")
-                .withDetail(DETAIL_KEY_STATUS, healthSnapshot.message());
-
-        healthSnapshot
-                .timeUntilNextCheck()
-                .ifPresent(duration -> builder.withDetail(DETAIL_KEY_NEXT_CHECK_IN, duration.toString()));
-
-        return builder.build();
+        return Health.up().withDetail("status", "Health monitoring disabled during startup").build();
     }
 }
