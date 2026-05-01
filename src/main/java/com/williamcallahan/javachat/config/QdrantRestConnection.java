@@ -59,9 +59,9 @@ public class QdrantRestConnection {
             @Value(QDRANT_PORT_PROPERTY) int configuredPort,
             @Value(QDRANT_USE_TLS_PROPERTY) boolean useTls,
             @Value(QDRANT_API_KEY_PROPERTY) String apiKey) {
-        // Self-healing: strip protocol if present in host string
+        // Self-healing: aggressively strip any protocol prefix and trim whitespace
         if (host != null) {
-            this.host = host.replace("https://", "").replace("http://", "");
+            this.host = host.trim().replaceAll("^(https?://)+", "").replace("/", "");
         } else {
             this.host = null;
         }

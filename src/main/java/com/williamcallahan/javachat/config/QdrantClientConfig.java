@@ -56,10 +56,10 @@ public class QdrantClientConfig {
     public QdrantClient qdrantClient() {
         log.info("Creating QdrantClient with gRPC keepalive");
 
-        // Self-healing: strip protocol if present in host string
+        // Self-healing: aggressively strip any protocol prefix and trim whitespace
         String sanitizedHost = host;
         if (sanitizedHost != null) {
-            sanitizedHost = sanitizedHost.replace("https://", "").replace("http://", "");
+            sanitizedHost = sanitizedHost.trim().replaceAll("^(https?://)+", "").replace("/", "");
         }
 
         ManagedChannelBuilder<?> channelBuilder = ManagedChannelBuilder.forAddress(sanitizedHost, port);
