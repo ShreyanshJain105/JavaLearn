@@ -39,30 +39,14 @@ USER appuser
 # Copy built app
 COPY --from=builder /app/app.jar app.jar
 
-# Environment defaults
-ENV PORT=8085
-ENV APP_LOCAL_EMBEDDING_ENABLED=false
-ENV APP_LOCAL_EMBEDDING_USE_HASH_WHEN_DISABLED=true
-ENV QDRANT_HOST=localhost
-ENV QDRANT_PORT=6334
-ENV QDRANT_REST_PORT=6333
-ENV DOCS_SNAPSHOT_DIR=/app/data/snapshots
-ENV DOCS_PARSED_DIR=/app/data/parsed
-ENV DOCS_INDEX_DIR=/app/data/index
-
 EXPOSE 10000
 
-
-# Run app with critical flags for Qdrant/Netty performance
-ENTRYPOINT ["sh", "-c", "java \
-  -XX:+IgnoreUnrecognizedVMOptions \
-  --enable-native-access=ALL-UNNAMED \
-  --sun-misc-unsafe-memory-access=allow \
-  -Xms128m -Xmx200m \
-  -XX:MaxMetaspaceSize=128m \
-  -XX:+UseStringDeduplication \
-  -XX:+UseG1GC \
-  -XX:MaxGCPauseMillis=200 \
-  -XX:+ExitOnOutOfMemoryError \
-  -Djava.security.egd=file:/dev/./urandom \
-  -jar app.jar --server.port=${PORT:-10000}"]
+# Run app with optimized production flags
+ENTRYPOINT ["java", \
+  "-Xms128m", "-Xmx256m", \
+  "-XX:+UseG1GC", \
+  "-XX:+ExitOnOutOfMemoryError", \
+  "-Djava.security.egd=file:/dev/./urandom", \
+  "-Djava.awt.headless=true", \
+  "-jar", "app.jar", \
+  "--server.port=10000"]
