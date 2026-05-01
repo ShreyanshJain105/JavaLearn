@@ -17,7 +17,7 @@ public class PortInitializer implements EnvironmentPostProcessor, Ordered {
     private static final Logger LOGGER = LoggerFactory.getLogger(PortInitializer.class);
 
     private static final int DEFAULT_MIN = 8085;
-    private static final int DEFAULT_MAX = 8090;
+    private static final int DEFAULT_MAX = 10000;
     private static final String PROFILE_TEST = "test";
     private static final String PROFILE_CLI = "cli";
     private static final String PROFILE_CLI_GITHUB = "cli-github";
