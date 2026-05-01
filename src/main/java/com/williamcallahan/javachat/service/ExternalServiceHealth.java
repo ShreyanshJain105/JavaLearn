@@ -82,10 +82,18 @@ public class ExternalServiceHealth {
         // Initialize service statuses
         serviceStatuses.put(SERVICE_QDRANT, new ServiceStatus());
 
-        // Connectivity-only check during bean initialization to avoid racing collection provisioning.
-        checkQdrantConnectivity();
+        // Connectivity check in a separate thread to avoid blocking startup
+        Thread.ofVirtual().start(() -> {
+            try {
+                // Short delay to allow context to stabilize
+                Thread.sleep(Duration.ofSeconds(2));
+                checkQdrantConnectivity();
+            } catch (InterruptedException _) {
+                Thread.currentThread().interrupt();
+            }
+        });
 
-        log.info("ExternalServiceHealth initialized, monitoring {} services", serviceStatuses.size());
+        log.info("ExternalServiceHealth initialized in background mode");
     }
 
     /**
