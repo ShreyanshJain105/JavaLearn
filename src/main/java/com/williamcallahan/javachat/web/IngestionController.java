@@ -53,11 +53,20 @@ public class IngestionController extends BaseController {
                     int maxPages) {
 
         try {
-            log.info("Starting ingestion for up to {} pages", maxPages);
-            docsIngestionService.crawlAndIngest(maxPages);
+            log.info("Starting background ingestion for up to {} pages", maxPages);
+            
+            // Run ingestion in a separate thread to prevent gateway timeouts
+            Thread.ofVirtual().start(() -> {
+                try {
+                    docsIngestionService.crawlAndIngest(maxPages);
+                    log.info("Background ingestion completed successfully for up to {} pages", maxPages);
+                } catch (Exception e) {
+                    log.error("Background ingestion failed: {}", e.getMessage(), e);
+                }
+            });
 
-            return ResponseEntity.ok(
-                    IngestionRunOutcome.success(String.format("Ingestion completed for up to %d pages", maxPages)));
+            return ResponseEntity.status(HttpStatus.ACCEPTED)
+                    .body(IngestionRunOutcome.success(String.format("Ingestion started in background for up to %d pages", maxPages)));
 
         } catch (IOException ioException) {
             log.error(
@@ -86,8 +95,19 @@ public class IngestionController extends BaseController {
             @RequestParam(name = "dir", defaultValue = "data/docs") String directory,
             @RequestParam(name = "maxFiles", defaultValue = "50000") @Min(1) @Max(1000000) int maxFiles) {
         try {
-            IngestionLocalOutcome outcome = docsIngestionService.ingestLocalDirectory(directory, maxFiles);
-            return ResponseEntity.ok(outcome);
+            log.info("Starting background local ingestion from directory: {}", directory);
+            
+            Thread.ofVirtual().start(() -> {
+                try {
+                    docsIngestionService.ingestLocalDirectory(directory, maxFiles);
+                    log.info("Background local ingestion completed successfully for directory: {}", directory);
+                } catch (Exception e) {
+                    log.error("Background local ingestion failed: {}", e.getMessage(), e);
+                }
+            });
+
+            return ResponseEntity.status(HttpStatus.ACCEPTED)
+                    .body(IngestionLocalOutcome.success(String.format("Local ingestion started in background for directory: %s", directory)));
         } catch (IllegalArgumentException illegalArgumentException) {
             return buildIngestionValidationError(illegalArgumentException);
         } catch (IOException ioException) {
