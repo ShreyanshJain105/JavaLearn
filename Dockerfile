@@ -39,5 +39,5 @@ USER appuser
 
 EXPOSE 10000
 
-# Final stability flags: 300MB Heap, Shell form for PORT resolution
-ENTRYPOINT ["sh", "-c", "java --enable-native-access=ALL-UNNAMED -Xms128m -Xmx300m -XX:+UseG1GC -XX:+ExitOnOutOfMemoryError -Djava.security.egd=file:/dev/./urandom -jar app.jar --server.port=${PORT:-10000}"]
+# Final stability flags: 300MB Heap, Auto-detect PORT from env
+ENTRYPOINT ["java", "--enable-native-access=ALL-UNNAMED", "-Xms128m", "-Xmx300m", "-XX:+UseG1GC", "-XX:+ExitOnOutOfMemoryError", "-Djava.security.egd=file:/dev/./urandom", "-jar", "app.jar"]
