@@ -108,6 +108,18 @@ public class QdrantIndexInitializer {
      */
     @EventListener(ApplicationReadyEvent.class)
     public void ensureCollectionsAndIndexes() {
+        log.info("[QDRANT] Application ready. Starting background index validation...");
+        
+        Thread.ofVirtual().start(() -> {
+            try {
+                performInitialization();
+            } catch (Exception e) {
+                log.error("[QDRANT] Background index validation failed: {}", e.getMessage(), e);
+            }
+        });
+    }
+
+    private void performInitialization() {
         AppProperties.Qdrant qdrant = appProperties.getQdrant();
         List<String> collections = qdrant.getCollections().all();
         String denseVectorName = qdrant.getDenseVectorName();
